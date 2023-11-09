@@ -3,14 +3,13 @@ use std::path::PathBuf;
 use clap::Parser;
 
 /// Program which streams through a gzipped CSV, greps for rows which match some criteria and then
-/// streams those rows to a new file on S3
+/// streams those to stdout as plaintext CSV
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 pub struct Args {
     /// path of the file
     #[arg(short, long)]
     pub file: PathBuf,
-
 
     /// pattern to search by
     #[arg(short, long)]
