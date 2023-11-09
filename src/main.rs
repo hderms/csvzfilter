@@ -48,13 +48,18 @@ fn main() -> anyhow::Result<()> {
 
     for result in csv_rdr.records() {
         let record = result?;
-        for (i, _) in enumerated_headers.iter() {
-            let value = record.get(*i);
-            if let Some(v) = value {
-                if pattern.is_match(v) {
-                    writer.write_record(&record)?;
-                }
-            }
+
+        let found_match = enumerated_headers
+            .iter()
+            .map(|(i, _)| record.get(*i))
+            .any(|maybe_column|
+                maybe_column
+                    .is_some_and(|v|
+                        pattern.is_match(v))
+            );
+
+        if found_match {
+            writer.write_record(&record)?;
         }
     }
     writer.flush()?;
