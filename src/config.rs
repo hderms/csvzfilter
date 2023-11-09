@@ -1,6 +1,5 @@
-use std::error::Error;
-use std::path::PathBuf;
 use clap::Parser;
+use std::path::PathBuf;
 
 /// Program which streams through a gzipped CSV, greps for rows which match some criteria and then
 /// streams those to stdout as plaintext CSV
