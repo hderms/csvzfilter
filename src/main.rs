@@ -8,6 +8,7 @@ use std::io;
 use std::io::BufReader;
 
 mod config;
+const BUFFER_SIZE: usize = 16 * (1 << 10);
 
 fn main() -> anyhow::Result<()> {
     let config: Args = Args::parse();
@@ -22,6 +23,7 @@ fn main() -> anyhow::Result<()> {
 
     let mut csv_rdr = csv::ReaderBuilder::new()
         .has_headers(true)
+        .buffer_capacity( BUFFER_SIZE)
         .from_reader(decoder);
 
     let headers = { csv_rdr.headers()?.clone() };
@@ -40,6 +42,7 @@ fn main() -> anyhow::Result<()> {
 
     let mut writer = WriterBuilder::new()
         .has_headers(true)
+        .buffer_capacity(BUFFER_SIZE)
         .from_writer(io::stdout());
     writer.write_record(&headers)?;
 
